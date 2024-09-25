@@ -9,8 +9,7 @@ from download_db import download_and_prepare
 import langchain
 
 # Кэшируем сложные инициализации, чтобы они не перезапускались при каждом запросе
-
-langchain.debug=False
+langchain.debug = False
 
 @st.cache_resource
 def setup():
@@ -41,87 +40,53 @@ def clear_chat():
     st.session_state['chat_history'] = []
     st.session_state['movie_agent_executor'] = initialize_agent()
 
-# Устанавливаем стили, чтобы увеличить отступы и сделать интерфейс более просторным
-st.markdown(
-    """
-    <style>
-    .example-column {
-        padding-right: 30px; /* Отступ между колонками */
-    }
-    .chat-column {
-        padding-left: 30px;
-    }
-    .stTextInput > div > input {
-        width: 100%;
-    }
-    .stButton > button {
-        width: 100%;
-    }
-    .dialogue {
-        background-color: #f4f4f4;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# Основной заголовок и оформление
+st.markdown("<h1 style='text-align: center; color: #FF6347;'>🎬 Movie Search Bot</h1>", unsafe_allow_html=True)
 
-# Лэйаут с двумя колонками: слева примеры запросов, справа чат
-col1, col2 = st.columns([2, 4])  # Изменяем пропорции колонок, чтобы увеличить левую колонку
-
-# Левая колонка с примерами запросов
-with col1:
-    st.write("### Примеры запросов", unsafe_allow_html=True)
+# Примеры запросов в боковой панели
+with st.sidebar:
+    st.write("### Примеры запросов:")
     st.markdown("""
-    <div class="example-column">
-        <ul>
-            <li><b>Поиск фильма по описанию:</b><br>"Фильм, где человек после авиакрушения несколько лет выживает на острове"</li>
-            <li><b>Поиск описания фильма по названию:</b><br>"Расскажи про фильм Титаник"</li>
-            <li><b>Рекомендация фильма по жанру или актеру:</b><br>"Посоветуй мне фильм в жанре драма";<br>"Какие фильмы с Леонардо ДиКаприо ты можешь порекомендовать?"</li>
-            <li><b>Группировка и поиск используя сложные запросы:</b><br>"Топ-5 самых популярных фильмов в жанре триллер";<br>"Покажи фильмы, в которых снимался Джонни Депп, и отсортируй их по рейтингу"</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
+        - **Поиск фильма по описанию:** "Фильм, где человек после авиакрушения несколько лет выживает на острове"
+        - **Поиск описания фильма по названию:** "Расскажи про фильм Титаник"
+        - **Рекомендация фильма по жанру или актеру:** "Посоветуй мне фильм в жанре драма"; "Какие фильмы с Леонардо ДиКаприо ты можешь порекомендовать?"
+        - **Группировка и поиск используя сложные запросы:** "Топ-5 самых популярных фильмов в жанре триллер"; "Покажи фильмы, в которых снимался Джонни Депп, и отсортируй их по рейтингу"
+    """)
 
-# Правая колонка с диалогом
+# Ввод запроса и кнопки
+input_text = st.text_input("Введите запрос", key="input_text", placeholder="Например: Порекомендуй драму с ДиКаприо")
+
+# Стилизация кнопок
+col1, col2 = st.columns([1, 1], gap="small")
+
+with col1:
+    send_button = st.button("Отправить запрос", key="send_button", use_container_width=True)
+
 with col2:
-    st.title('Movie Search Bot')
+    clear_button = st.button("Очистить диалог", key="clear_button", use_container_width=True)
 
-    # Ввод запроса
-    input_text = st.text_input("Введите запрос")
+# Обработка кнопок с их действиями
+if send_button and input_text:
+    try:
+        with st.spinner("🍿 Агент обрабатывает запрос..."):
+            response = get_movie_agent_response(st.session_state['movie_agent_executor'], input_text)
+            st.session_state['chat_history'].append((input_text, response))
+    except Exception as e:
+        st.session_state['chat_history'].append((input_text, "Извините, я не смог обработать ваш запрос"))
 
-    # Кнопки для отправки запроса и очистки чата
-    with st.container():
-        col_button1, col_button2 = st.columns([1, 1])  # Создаем две колонки для кнопок
+if clear_button:
+    clear_chat()
 
-        # Кнопка отправки запроса
-        with col_button1:
-            if st.button("Отправить запрос"):
-                if input_text:
-                    # Показываем индикатор загрузки
-                    with st.spinner("Агент обрабатывает запрос..."):
-                        response = get_movie_agent_response(st.session_state['movie_agent_executor'], input_text)
-                        st.session_state['chat_history'].append((input_text, response))
+# Отображение чата в стиле Telegram с правильным порядком
+st.write("### Диалог:")
 
-        # Кнопка для очистки диалога и памяти агента
-        with col_button2:
-            if st.button("Очистить диалог"):
-                clear_chat()
+chat_container = st.container()
 
-    # Визуальное отображение последних 3 сообщений как переписки
-    st.write("### Диалог:")
-
-    # Прокрутка через history (последние 3 сообщения показываем)
-    if st.session_state['chat_history']:
-        for query, answer in st.session_state['chat_history'][-3:]:
-            st.markdown(f"<div class='dialogue'><b>Вы:</b> {query}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='dialogue'><b>Movie Search Bot:</b> {answer}</div>", unsafe_allow_html=True)
-
-    # Если сообщений больше, даём возможность прокрутки через history
-    if len(st.session_state['chat_history']) > 3:
-        with st.expander("Показать всю историю переписки"):
-            for query, answer in st.session_state['chat_history']:
-                st.markdown(f"<div class='dialogue'><b>Вы:</b> {query}</div>", unsafe_allow_html=True)
-                st.markdown(f"<div class='dialogue'><b>Movie Search Bot:</b> {answer}</div>", unsafe_allow_html=True)
+with chat_container:
+    for query, answer in st.session_state['chat_history']:
+        # Сначала сообщение пользователя (справа)
+        st.markdown(f"<div style='text-align: right; padding: 10px; background-color: #F0F8FF; border-radius: 10px; margin-bottom: 10px;'>"
+                    f"<strong>Вы:</strong> {query}</div>", unsafe_allow_html=True)
+        # Затем ответ бота (слева)
+        st.markdown(f"<div style='text-align: left; padding: 10px; background-color: #E0FFFF; border-radius: 10px; margin-bottom: 10px;'>"
+                    f"<strong>Movie Search Bot:</strong> {answer}</div>", unsafe_allow_html=True)
