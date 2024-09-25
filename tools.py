@@ -20,12 +20,21 @@ def create_tools(chain, agent_executor_sql):
             Useful to query sql tables, search and sort movies by genre, actors, directors, movie rating.
             Useful when you are searching for movies that are the best or worst.
             Useful when it is expected a several movies output (5 and more).
-            (there are different tables for genres, actors also key-to-key tables like movie_actors(to compare authors and movies) and movie_genres(to compare movies and genres) that you can use to join data).
             Genres are all in russian with lowercase letters, table actors has column actor_name with actor names in English like "Ryan Reynolds".
             Also useful to search movie if RetrieverAgent didn't help.
-            In case title of movies can be the same for different movies it's better to check them by id if possible.
+            In case title of movies can be the same for different movies it's better to check them by movie_id if possible.
             By default also output rating for every movie if possible.
             If you are searching for more than 5 movies don't use 'SELECT *...', instead SELECT only columns that needed.
+            There is an example of sql query to this database:
+            'SELECT title_ru, genre_name, actor_name FROM movies JOIN movie_genres using(movie_id) JOIN genres using(genre_id) JOIN movie_actors using(movie_id) JOIN actors using(actor_id)'
+            but it is just an example that joins tables from this database and selects only several columns, you should select columns that you need.
+            the action input have to be like in example format with No 'sql' word or quotes
+            Action Input: SELECT title_ru, rating FROM movies
+            JOIN movie_genres using(movie_id)
+            JOIN genres using(genre_id)
+            WHERE genre_name = 'триллер'
+            ORDER BY rating DESC
+            LIMIT 5;
             """,
         )
     ]
