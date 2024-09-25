@@ -1,10 +1,8 @@
-from dotenv import load_dotenv
-import os
+import streamlit as st
 from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings, ChatNVIDIA
 
 def initialize_llm(model_name='google/gemma-2-27b-it'):
-    load_dotenv()
-    api_key = os.getenv('NVIDIA_API_KEY')
+    api_key = st.secrets["NVIDIA_API_KEY"]
 
     if not api_key:
         raise ValueError("API ключ не найден! Проверьте файл .env")
