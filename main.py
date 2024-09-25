@@ -18,7 +18,7 @@ def setup():
     llm, embedder = initialize_llm()
     ensemble_retriever = initialize_retrievers(embedder, "faiss_mistral-7b-v2_embed_index", "retrievers/bm25_retriever.pkl")
     chain = initialize_prompts_and_chain(llm, ensemble_retriever)
-    agent_executor_sql = initialize_sql_agent("databases\movies_with_descriptions.db", llm)
+    agent_executor_sql = initialize_sql_agent("databases/movies_with_descriptions.db", llm)
     tools_mix = create_tools(chain, agent_executor_sql)
     return llm, tools_mix
 
