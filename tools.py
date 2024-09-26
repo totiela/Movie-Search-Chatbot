@@ -1,5 +1,6 @@
 from langchain.agents import Tool
 
+# Функция для создания списка инструментов для агентов: RetrieverAgent и SQLAgent
 def create_tools(chain, agent_executor_sql):
 
     tools_mix = [
