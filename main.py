@@ -81,7 +81,7 @@ if send_button and input_text:
     try:
         # Отображаем индикатор загрузки во время выполнения запроса
         with st.spinner("🍿 Агент обрабатывает запрос..."):
-            # Получаем ответ от Movie Search Bot
+            # Получаем ответ от Movie Search ChatBot
             response = get_movie_agent_response(st.session_state['movie_agent_executor'], input_text)
             # Сохраняем запрос и ответ в историю чата
             st.session_state['chat_history'].append((input_text, response))
