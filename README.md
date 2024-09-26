@@ -1,4 +1,4 @@
-#🎬 Чат-Бот для поиска фильмов
+# 🎬 Чат-Бот для поиска фильмов
 
 [![Запустить приложение](https://img.shields.io/badge/Streamlit-Запустить%20приложение-red?style=for-the-badge&logo=streamlit)]([https://ваш-домен.com](https://movie-search-chatbot-by-sanchezzz.streamlit.app/))
 
