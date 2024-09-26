@@ -2,8 +2,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
+# Функция для инициализации шаблонов промптов и создания цепочки с LLM и ретривером
 def initialize_prompts_and_chain(llm, retriever):
-    # Шаблон для извлечения названия фильма
+    # Шаблон для извлечения названия фильма из текста
     film_name_template = """
     From the text below find the name of the movie and return it. If you dont find the name of the movie - return key words form the text.
     DON'T invent it yourself, use only the text below!!! Also dont answer the question given, just follow my instructions.
@@ -30,7 +31,7 @@ def initialize_prompts_and_chain(llm, retriever):
     text: {context}
     """
 
-    # Шаблон для ответов
+    # Шаблон для ответа на запрос пользователя, использующего контекст
     answer_template = """
     Answer to the question or statement only on the following context.
 
@@ -50,25 +51,31 @@ def initialize_prompts_and_chain(llm, retriever):
 
     Question: {question}
 
-    For movie in asnwer also use year 'Дата релиза' in '()' after the movie title, rating of the movie and description of the movie if possible.
+    For movie in answer also use year 'Дата релиза' in '()' after the movie title, rating of the movie and description of the movie if possible.
     Ответь на русском языке.
-    Если не знаешь ответ ответь что ты не знаешь.
+    Если не знаешь ответ, ответь что ты не знаешь.
     """
 
     # Создаём промпты из шаблонов
-    film_name_prompt = ChatPromptTemplate.from_template(film_name_template)
-    answer_prompt = ChatPromptTemplate.from_template(answer_template)
+    film_name_prompt = ChatPromptTemplate.from_template(film_name_template)  # Промпт для поиска названия фильма
+    answer_prompt = ChatPromptTemplate.from_template(answer_template)  # Промпт для формирования ответа
 
-    # Функция для формирования строки из полученных документов
+    # Функция для форматирования документов в строку
     def format_docs(docs):
+        # Форматируем документы с контентом и метаданными
         return "\n\n".join([f"Content: {d.page_content}\nMetadata: {d.metadata}" for d in docs])
 
-    # Создание цепочки
+    # Создание цепочки:
+    # - Извлекаем контекст для поиска названия фильма
+    # - Передаём в ретривер для поиска фильмов по ключевым словам
+    # - Затем создаём ответ с помощью промпта и LLM
     chain = (
-        {"context": ({'context': RunnablePassthrough()} | film_name_prompt | llm | StrOutputParser()) | retriever | format_docs, "question": RunnablePassthrough()}
-        | answer_prompt
-        | llm
-        | StrOutputParser()
+        {"context": ({'context': RunnablePassthrough()} | film_name_prompt | llm | StrOutputParser())  # Извлечение контекста и поиск названия
+        | retriever | format_docs,  # Поиск фильмов через ретривер по ключевым словам
+        "question": RunnablePassthrough()}  # Вопрос пользователя передаётся напрямую в цепочку
+        | answer_prompt  # Формируем ответ на основе контекста и вопроса
+        | llm  # Используем LLM для генерации ответа
+        | StrOutputParser()  # Парсим результат
     )
 
-    return chain
+    return chain  # Возвращаем финальную цепочку
