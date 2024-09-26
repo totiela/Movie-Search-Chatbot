@@ -50,7 +50,7 @@ def clear_chat():
     st.session_state['movie_agent_executor'] = initialize_agent()
 
 # Отображаем заголовок приложения с HTML-стилизацией
-st.markdown("<h1 style='text-align: center; color: #FF6347;'>🎬 Movie Search Bot</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #FF6347;'>🎬 Movie Search ChatBot</h1>", unsafe_allow_html=True)
 
 # Боковая панель с примерами запросов для удобства пользователей
 with st.sidebar:
