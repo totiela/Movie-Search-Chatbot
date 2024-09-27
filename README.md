@@ -80,11 +80,11 @@
 1. **Клонирование репозитория:**
    Чтобы склонировать репозиторий на локальную машину, выполните следующую команду в терминале:
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone https://github.com/totiela/Movie-Search-Chatbot.git
    ```
 2. **Переход в директорию проекта**: После клонирования переместитесь в директорию репозитория:
    ```bash
-   cd your-repository
+   cd Movie-Search-Chatbot
    ```
 3. **Установка зависимостей**:
    ```bash
