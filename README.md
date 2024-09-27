@@ -99,3 +99,35 @@
     ```bash
    streamlit run main.py
    ```
+
+  ### Описание файлов репозитория
+
+- [**.devcontainer/**](https://github.com/totiela/Movie-Search-Chatbot/tree/main/.devcontainer) — папка для настройки контейнера разработчика, помогает запускать проект в изолированной среде.
+
+- [**databases/**](https://github.com/totiela/Movie-Search-Chatbot/tree/main/databases) — папка с базой данных для работы проекта, хранит необходимые данные о фильмах.
+
+- [**faiss_mistral-7b-v2_embed_index/**](https://github.com/totiela/Movie-Search-Chatbot/tree/main/faiss_mistral-7b-v2_embed_index) — содержит индекс FAISS для векторного поиска по описаниям фильмов.
+
+- [**retrievers/**](https://github.com/totiela/Movie-Search-Chatbot/tree/main/retrievers) — папка с ретриверами, используемыми для поиска фильмов по описаниям и ключевым словам.
+
+- [**.gitignore**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/.gitignore) — файл, определяющий, какие файлы и папки следует игнорировать в Git.
+
+- [**README.md**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/README.md) — основной файл с описанием проекта.
+
+- [**download_db.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/download_db.py) — скрипт для загрузки необходимых файлов базы данных и индексов.
+
+- [**llm_utils.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/llm_utils.py) — вспомогательные функции для работы с LLM (Large Language Models).
+
+- [**main.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/main.py) — основной файл для запуска проекта.
+
+- [**movie_agent.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/movie_agent.py) — агент для работы с фильмами, использующий инструменты и ретриверы.
+
+- [**prompts_and_chain.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/prompts_and_chain.py) — логика работы с промптами и цепочками для обработки запросов.
+
+- [**requirements.txt**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/requirements.txt) — список зависимостей для установки и работы проекта.
+
+- [**retrievers.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/retrievers.py) — модуль с настройками ретриверов для поиска фильмов по ключевым словам и описаниям.
+
+- [**sql_agent.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/sql_agent.py) — SQL агент для взаимодействия с базой данных фильмов.
+
+- [**tools.py**](https://github.com/totiela/Movie-Search-Chatbot/blob/main/tools.py) — инструменты, используемые в проекте, такие как агенты и ретриверы.
