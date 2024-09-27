@@ -8,7 +8,7 @@ from movie_agent import initialize_movie_agent, get_movie_agent_response
 from download_db import download_and_prepare
 import langchain
 
-# Отключаем режим отладки LangChain для повышения производительности в продакшн-среде
+# Отключаем режим отладки LangChain для повышения производительности
 langchain.debug = False
 
 # Кэшируем ресурсы, чтобы избежать повторной инициализации при каждом запросе
@@ -99,17 +99,56 @@ if send_button and input_text:
 if clear_button:
     clear_chat()
 
-# Отображаем диалог с пользователем в формате мессенджера (стиль Telegram)
-st.write("### Диалог:")
+# Ограничение на количество отображаемых сообщений
+MAX_MESSAGES = 3  # Отображаем только последние 3 сообщения
 
-# Контейнер для истории чата
+# CSS для прокрутки контейнера (если нужно)
+st.markdown("""
+<style>
+.scrollable-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Отображение заголовка диалога и создание двух колонок
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    st.write("### Диалог:")
+
+# Если количество сообщений больше MAX_MESSAGES, отображаем чекбокс для показа всей истории
+if len(st.session_state['chat_history']) > MAX_MESSAGES:
+    with col2:
+        show_full_history = st.checkbox("Показать всю историю чата")
+else:
+    show_full_history = False
+
+# Отображаем диалог с пользователем в формате мессенджера
 chat_container = st.container()
 
 with chat_container:
-    for query, answer in st.session_state['chat_history']:
-        # Отображаем запрос пользователя справа
-        st.markdown(f"<div style='text-align: right; padding: 10px; background-color: #F0F8FF; border-radius: 10px; margin-bottom: 10px;'>"
-                    f"<strong>Вы:</strong> {query}</div>", unsafe_allow_html=True)
-        # Отображаем ответ бота слева
-        st.markdown(f"<div style='text-align: left; padding: 10px; background-color: #E0FFFF; border-radius: 10px; margin-bottom: 10px;'>"
-                    f"<strong>Movie Search Bot:</strong> {answer}</div>", unsafe_allow_html=True)
+    st.markdown('<div class="scrollable-container">', unsafe_allow_html=True)
+    
+    # Если выбрано отображение полной истории, показываем все сообщения
+    if show_full_history:
+        for query, answer in st.session_state['chat_history']:
+            # Сообщение пользователя
+            st.markdown(f"<div style='text-align: right; padding: 10px; background-color: #F0F8FF; border-radius: 10px; margin-bottom: 10px;'>"
+                        f"<strong>Вы:</strong> {query}</div>", unsafe_allow_html=True)
+            # Ответ бота
+            st.markdown(f"<div style='text-align: left; padding: 10px; background-color: #E0FFFF; border-radius: 10px; margin-bottom: 10px;'>"
+                        f"<strong>Movie Search Bot:</strong> {answer}</div>", unsafe_allow_html=True)
+    else:
+        # Если нет, отображаем только последние N сообщений
+        for query, answer in st.session_state['chat_history'][-MAX_MESSAGES:]:
+            # Сообщение пользователя
+            st.markdown(f"<div style='text-align: right; padding: 10px; background-color: #F0F8FF; border-radius: 10px; margin-bottom: 10px;'>"
+                        f"<strong>Вы:</strong> {query}</div>", unsafe_allow_html=True)
+            # Ответ бота
+            st.markdown(f"<div style='text-align: left; padding: 10px; background-color: #E0FFFF; border-radius: 10px; margin-bottom: 10px;'>"
+                        f"<strong>Movie Search Bot:</strong> {answer}</div>", unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
