@@ -21,7 +21,7 @@ load_dotenv()
 langchain_tracing_v2 = os.getenv("LANGCHAIN_TRACING_V2")
 langchain_endpoint = os.getenv("LANGCHAIN_ENDPOINT")
 langchain_api_key = os.getenv("LANGCHAIN_API_KEY")
-langchain_project = os.getenv("LANGCHAIN_PROJECT") как мне сделать это через streamlit secrets
+langchain_project = os.getenv("LANGCHAIN_PROJECT") 
 
 
 
