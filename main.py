@@ -7,11 +7,17 @@ from tools import create_tools
 from movie_agent import initialize_movie_agent, get_movie_agent_response
 from download_db import download_and_prepare
 import langchain
+import os
 
 langchain_tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
 langchain_endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
 langchain_api_key = st.secrets["LANGCHAIN_API_KEY"]
 langchain_project = st.secrets["LANGCHAIN_PROJECT"]
+
+os.environ["LANGCHAIN_TRACING_V2"] = str(langchain_tracing_v2)  # Преобразуем boolean в строку
+os.environ["LANGCHAIN_ENDPOINT"] = langchain_endpoint
+os.environ["LANGCHAIN_API_KEY"] = langchain_api_key
+os.environ["LANGCHAIN_PROJECT"] = langchain_project
 
 # Отключаем режим отладки LangChain для повышения производительности
 langchain.debug = False
