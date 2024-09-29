@@ -14,7 +14,7 @@ langchain_endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
 langchain_api_key = st.secrets["LANGCHAIN_API_KEY"]
 langchain_project = st.secrets["LANGCHAIN_PROJECT"]
 
-os.environ["LANGCHAIN_TRACING_V2"] = langchain_tracing_v2 # Преобразуем boolean в строку
+os.environ["LANGCHAIN_TRACING_V2"] = 'true' # Преобразуем boolean в строку
 os.environ["LANGCHAIN_ENDPOINT"] = langchain_endpoint
 os.environ["LANGCHAIN_API_KEY"] = langchain_api_key
 os.environ["LANGCHAIN_PROJECT"] = langchain_project
