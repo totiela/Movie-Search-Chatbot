@@ -8,6 +8,11 @@ from movie_agent import initialize_movie_agent, get_movie_agent_response
 from download_db import download_and_prepare
 import langchain
 
+tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
+endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
+api_key = st.secrets["LANGCHAIN_API_KEY"]
+project = st.secrets["LANGCHAIN_PROJECT"]
+
 # def initialize_langchain():
 #     # Получаем переменные из Streamlit secrets
 #     tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
