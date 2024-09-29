@@ -15,7 +15,7 @@ import os
 # langchain_project = st.secrets["LANGCHAIN_PROJECT"]
 
 
-os.environ["LANGCHAIN_TRACING_V2"] = true
+os.environ["LANGCHAIN_TRACING_V2"] = 'true'
 os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_API_KEY"] = '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'
 os.environ["LANGCHAIN_PROJECT"] = "pr-untimely-hand-46"
