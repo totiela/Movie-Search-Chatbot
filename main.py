@@ -7,6 +7,7 @@ from tools import create_tools
 from movie_agent import initialize_movie_agent, get_movie_agent_response
 from download_db import download_and_prepare
 import langchain
+from dotenv import load_dotenv
 import os
 
 # langchain_tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
