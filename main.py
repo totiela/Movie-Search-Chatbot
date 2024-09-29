@@ -14,10 +14,6 @@ def initialize_langchain():
     endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
     api_key = st.secrets["LANGCHAIN_API_KEY"]
     project = st.secrets["LANGCHAIN_PROJECT"]
-
-    # Добавьте отладочный вывод для проверки
-    st.write(f"Tracing: {tracing_v2}, Endpoint: {endpoint}, API Key: {api_key}, Project: {project}")
-    
     # Проверка наличия ключевых переменных
     if not api_key:
         raise ValueError("API ключ для LangChain не найден!")
