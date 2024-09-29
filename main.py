@@ -15,13 +15,19 @@ def initialize_langchain():
     api_key = st.secrets["LANGCHAIN_API_KEY"]
     project = st.secrets["LANGCHAIN_PROJECT"]
 
-    # Проверяем наличие ключевых переменных
+    # Добавьте отладочный вывод для проверки
+    st.write(f"Tracing: {tracing_v2}, Endpoint: {endpoint}, API Key: {api_key}, Project: {project}")
+    
+    # Проверка наличия ключевых переменных
     if not api_key:
         raise ValueError("API ключ для LangChain не найден!")
     
-    # Ваш код для инициализации LangChain или других сервисов
-    # Например, можно вернуть конфигурационные переменные
+    # Верните конфигурационные переменные
     return tracing_v2, endpoint, api_key, project
+
+# Вызов функции
+tracing_v2, endpoint, api_key, project = initialize_langchain()
+
 
 # Вызов функции и вывод переменных
 tracing_v2, endpoint, api_key, project = initialize_langchain()
