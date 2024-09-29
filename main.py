@@ -8,25 +8,10 @@ from movie_agent import initialize_movie_agent, get_movie_agent_response
 from download_db import download_and_prepare
 import langchain
 
-def initialize_langchain():
-    # Получаем переменные из Streamlit secrets
-    tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
-    endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
-    api_key = st.secrets["LANGCHAIN_API_KEY"]
-    project = st.secrets["LANGCHAIN_PROJECT"]
-    # Проверка наличия ключевых переменных
-    if not api_key:
-        raise ValueError("API ключ для LangChain не найден!")
-    
-    # Верните конфигурационные переменные
-    return tracing_v2, endpoint, api_key, project
-
-# Вызов функции
-tracing_v2, endpoint, api_key, project = initialize_langchain()
-
-
-# Вызов функции и вывод переменных
-tracing_v2, endpoint, api_key, project = initialize_langchain()
+langchain_tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
+langchain_endpoint = st.secrets["LANGCHAIN_ENDPOINT"]
+langchain_api_key = st.secrets["LANGCHAIN_API_KEY"]
+langchain_project = st.secrets["LANGCHAIN_PROJECT"]
 
 
 # Отключаем режим отладки LangChain для повышения производительности
