@@ -34,7 +34,7 @@ langchain-community==0.2.3
 langchain-core==0.2.41
 langchain-nvidia-ai-endpoints==0.2.2
 langchain-text-splitters==0.2.4
-langsmith==0.1.129
+langsmith==0.1.125
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 marshmallow==3.22.0
